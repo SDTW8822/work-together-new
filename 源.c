@@ -157,6 +157,29 @@ int main()
 	return 0;
 }
 
+/* 显示菜单，并获得用户键盘输入的数据 */
+int Menu(void)
+{
+	int itemSelected;
+	printf("\nManagement for student's scores \n");
+	printf("1—input record \n");										//录入每个学生的学号、姓名和考试成绩；
+	printf("2—caculate total and average acore of every course \n");	//计算每门课程的总分和平均分；
+	printf("3—caculate total and average acore of every student \n");	//计算每个学生的总分和平均分；
+	printf("4—sort in descending order by score of sum \n");			//按照每个学生的总分由高到低排出名次表
+	printf("5—sort in ascending order by score of sum \n");			//按照每个学生的总分由低到高排出名次表
+	printf("6—sort in ascending order by number \n");					//按照学号由小到大排出成绩表
+	printf("7—sort in dictionary order by name \n");					//按照姓名的字典顺序排出成绩表；
+	printf("8—search by number \n");									//按照学号查询学生排名及其各科考试成绩；
+	printf("9—search by name \n");										//按照姓名查询学生排名及其各科考试成绩；
+	printf("10—statistic analysis \n");									//统计各个分数段的学生人数及其所占的百分比
+	printf("11—list record \n");										//输出每个学生的学号、姓名、各科考试成绩、总分、平均分以及每门课程的总分和平均分。
+	printf("0—exit \n");
+
+	printf("please input your choice:\n");
+	scanf("%d", &itemSelected);				//读入用户输入
+
+	return itemSelected;
+}
 
 /* 输入n个学生的m门课的成绩 */
 void ReadScore(long num[], char name[][MAX_LEN], float score[][COURSE_NUM],char name_css[][COURSE_NUM], int n, int m)
@@ -172,7 +195,7 @@ void ReadScore(long num[], char name[][MAX_LEN], float score[][COURSE_NUM],char 
 		scanf("%ld", num[i]);
 		printf("please input the score in this order:");
 		for (x = 0; x < m; x++)
-		{
+{
 			printf("%s\t", name_css[x]);
 		}
 		scanf("%f", score[i]);
@@ -188,10 +211,10 @@ void AverSumofEveryCourse(float score[][COURSE_NUM],char name_css[], int n, int 
 	for (i = 0; i < n; i++)
 	{
 		for (j = 0; j < m; j++)
-		{
+{
 			sum[i] += score[i][j];
 
-		}
+}
 		aver[i] = sum[i] / n;
 	}
 	for (k = 0; k < m; k++)
