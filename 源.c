@@ -191,6 +191,10 @@ void AverSumofEveryCourse(float score[][COURSE_NUM],int n, int m)  // m门课程，n
 		}
 		aver[i] = all[i] / m;
 	}
+	for (k = 0; k < m; k++)
+	{
+		printf("第 %d 门 成绩总分：%0.2f,平均分：%0.2f\n", k + 1, all[k], aver[k]);
+	}
 }
 
 /* 计算每个学生各门课程的总分和平均分——有输出 */
@@ -204,7 +208,7 @@ void AverSumofEveryStudent(long num[], char name[][MAX_LEN], float score[][COURS
 	{
 		for (j = 0; j < m; j++)
 		{
-			sum[i] = sum[i] + score[i][k];
+			sum[i] = sum[i] + score[i][j];
 		
 		}
 		aver[i] = sum[i] / m;
@@ -463,3 +467,4 @@ void PrintScore(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], flo
 	}
 }
 
+//zwx 完成
