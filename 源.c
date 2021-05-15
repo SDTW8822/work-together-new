@@ -463,3 +463,4 @@ void PrintScore(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], flo
 	}
 }
 
+//zwx Íê³É
