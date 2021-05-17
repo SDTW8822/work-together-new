@@ -112,6 +112,7 @@ int main()
 			AsSortbyNum(num, name, score, sum, aver, n, m,Descending);
 			printf("\nsort in ascending order by number:\n");
 			PrintScore(num, name, score, sum, aver, n, m);
+			printf("please input your choice:\n");
 			break;
 		case 7: AverSumofEveryStudent_no_out(num, name, score, n, m, sum, aver);	//must run this function first, then run next funcion
 			SortbyName(num, name, score, sum, aver, n, m);
@@ -200,46 +201,46 @@ void AverSumofEveryCourse(float score[][COURSE_NUM],int n, int m)  // m门课程，n
 /* 计算每个学生各门课程的总分和平均分——有输出 */
 void AverSumofEveryStudent(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], int n, int m, float sum[STU_NUM], float aver[STU_NUM])	// m门课程，n个学生
 {
-	int i, j, k;
-	char(*np)[MAX_LEN];
-	np = name;
-	sum[0] = 0;
+	int i, j;
+	
+
+
 	for (i = 0; i < n; i++)
 	{
+		sum[i] = 0;
 		for (j = 0; j < m; j++)
 		{
 			sum[i] = sum[i] + score[i][j];
 		
 		}
 		aver[i] = sum[i] / m;
+		printf("姓名：%s\t学号：%ld\t 总分：%0.2f \t 平均分：%0.2f\n", name[i], num[i], sum[i], aver[i]);
 	}
-	for (k = 0; k < n; k++)
-	{
-		printf("姓名：%s\t学号：%ld\t 总分：%0.2f \t 平均分：%0.2f", np[k], num[k], sum[k], aver[k]);
-	}
+	
 }
 
 /* 计算每个学生各门课程的总分和平均分——无输出 */
 void AverSumofEveryStudent_no_out(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], int n, int m, float sum[STU_NUM], float aver[STU_NUM])	// m门课程，n个学生
 {
-	int i, j, k;
+	int i, j;
 	
-	sum[0] = 0;
 	for (i = 0; i < n; i++)
 	{
+		sum[i] = 0;
 		for (j = 0; j < m; j++)
 		{
-			sum[i] = sum[i] + score[i][k];
+			sum[i] = sum[i] + score[i][j];
 
 		}
 		aver[i] = sum[i] / m;
+		
 	}
 }
 
 /* 用选择法，将数组sum的元素值排序 */
 void SortbyScore(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], float sum[], float aver[], int n, int m, int(*compare)(float a, float b))
 {
-	int i, j, k;
+	int i, j, k,t;
 	float(*np)[COURSE_NUM];
 	char(*p)[MAX_LEN];
 	p = name;
@@ -253,7 +254,10 @@ void SortbyScore(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], fl
 		}
 		if (k != j)
 		{	
-			SwapFloat(np + k, np + i);
+			for (t = 0; t < m; t++)
+			{
+				SwapFloat(&score[k][t], &score[i][t]);
+			}
 			SwapFloat(&sum[k], &sum[i]);
 			SwapFloat(&aver[k], &aver[i]);
 			SwapLong(&num[k], &num[i]);
@@ -311,7 +315,7 @@ void SwapChar(char x[], char y[])
 /* 按照选择法，将数组num的元素值按照从小到大排序 */
 void AsSortbyNum(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], float sum[], float aver[], int n, int m, int (*nunn)(float a, float b))
 {
-	int i, j, k;
+	int i, j, k,t;
 	char(*p)[MAX_LEN];
 	float(*np)[COURSE_NUM];
 	np = score;
@@ -321,11 +325,14 @@ void AsSortbyNum(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], fl
 		k = i;
 		for (j = i + 1; j < n; j++)
 		{
-			if ((*nunn)(num[j], num[k]))  k = j;
+			if (num[j]<num[k])  k = j;
 		}
 		if (k != j)
 		{
-			SwapFloat(np + k, np + i);
+			for (t = 0; t < m; t++)
+			{
+				SwapFloat(&score[k][t], &score[i][t]);
+			}
 			SwapFloat(&sum[k], &sum[i]);
 			SwapFloat(&aver[k], &aver[i]);
 			SwapLong(&num[k], &num[i]);
@@ -338,40 +345,36 @@ void AsSortbyNum(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], fl
 /* 实现字符串按字典顺序排序 */
 void SortbyName(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], float sum[], float aver[], int n, int m)
 {
-	char(*p)[MAX_LEN];
-	float(*np)[COURSE_NUM];
-	int i, j, k;
-	p = name;
-	np = score;
+	int i, j, t;
+
 	for (i = 0; i < n - 1; i++)
 	{
 		for (j = i + 1; j < n; j++)
-
 		{
-			if (strcmp(name[i], name[j]) > 0)
-
-
-
+			if (strcmp(name[j], name[i]) < 0)
 			{
-				SwapFloat(&sum[j], &sum[i]);
-				SwapLong(&num[j], &num[i]);
-				SwapFloat(np + i, np + j);
-				SwapChar(p + j, p + i);
+				for (t = 0; t < m; t++)		
+				{
+					SwapFloat(&score[i][t], &score[j][t]);
+				}
+				SwapFloat(&sum[i], &sum[j]);	
+				SwapFloat(&aver[i], &aver[j]);	
+				SwapLong(&num[i], &num[j]);		
+				SwapChar(name[i], name[j]);		
 			}
 		}
 	}
-
 }
 
 /* 按照学号，查找学生成绩并显示查找结果 */
 void SearchbyNum(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], float sum[], float aver[], int n, int m)
 {
-	int i, think, cishu = 0;
+	int i, think,t, cishu = 0;
 	long   nums;
 	float(*p)[COURSE_NUM];
 	think = 0;
 	p = score;
-	SortbyScore(num, name, score, sum, aver, n, m, Descending);
+	
 
 	printf("******************Whitch ID do you want to know !Please input it :\n");
 	scanf("%ld", &nums);
@@ -388,20 +391,23 @@ void SearchbyNum(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], fl
 
 	}
 
-	printf("学号 :%ld\t  姓名 :%s \t 总分 :%0.2f \t   平均分：%0.2f\t 名次：%d\n", num[think], name[think], sum[think],aver[think] ,think + 1);
-	printf("各科成绩：%0.2f\n", p[think]);
+	printf("\n学号 :%ld\t  姓名 :%s \t 总分 :%0.2f \t   平均分：%0.2f\t 名次：%d\n", num[think], name[think], sum[think],aver[think] ,think + 1);
+	printf("\n各科成绩：\n");
+	for (t = 0; t < m; t++)
+	{
+		printf("%0.2f\t", score[think][t]);
+	}
+	printf("\n");
 }
 
 /* 按照姓名，查询学生排名并显示查找结果 */
 void SearchbyName(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], float sum[], float aver[], int n, int m)
 {
-	int i, think, cishu = 0;
+	int i, think,t, cishu = 0;
 	char names[1][MAX_LEN];
 	float(*p)[COURSE_NUM];
 	p = score;
 	think = 0;
-
-	SortbyScore(num, name, score, sum, aver, n, m, Descending);
 
 	printf("******************Whitch NAME   do you want to know !Please input it :\n");
 	scanf("%s", names[0]);
@@ -418,8 +424,13 @@ void SearchbyName(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], f
 
 	}
 
-	printf("学号 :%ld\t  姓名 :%s \t 总分 :%0.2f \t   平均分：%0.2f\t 名次：%d\n", num[think], name[think], sum[think], aver[think], think + 1);
-	printf("各科成绩：%0.2f\n", p[think]);
+	printf("\n学号 :%ld\t  姓名 :%s \t 总分 :%0.2f \t   平均分：%0.2f\t 名次：%d\n", num[think], name[think], sum[think], aver[think], think + 1);
+	printf("\n各科成绩：%0.2f\n");
+	for (t = 0; t < m; t++)
+	{
+		printf("%0.2f\t", score[think][t]);
+	}
+	printf("\n");
 }
 
 /* 统计各个分数段的学生人数及其所占的百分比 */
@@ -455,15 +466,21 @@ void StatisticAnalysis(float sum[], int n)	//m门课程，n个学生
 /* 打印学生成绩 */
 void PrintScore(long num[], char name[][MAX_LEN], float score[][COURSE_NUM], float sum[], float aver[], int n, int m)
 {
-	int i;
+	int i,t;
 	char(*p)[MAX_LEN];
 	float(*np)[COURSE_NUM];
 	np = score;
 	p = name;
 	for (i = 0; i < n; i++)
 	{
-		printf("\t姓名：%s学号 ：%10ld 总分：%4.2f 平均分：%4.2f\n", p[i], num[i], sum[i],aver[i]);
-		printf("各科成绩：%0.2f", np[i]);
+		printf("\n姓名：%s学号 ：%10ld 总分：%4.2f 平均分：%4.2f\n", p[i], num[i], sum[i],aver[i]);
+		printf("各科成绩：\t");
+		for (t = 0; t < m; t++)
+		{
+			printf("%0.2f\t", score[i][t]);
+
+		}
+		printf("\n");
 	}
 }
 
